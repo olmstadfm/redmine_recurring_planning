@@ -1,0 +1,6 @@
+#recurrence
+  .contextual
+    = link_to l(:button_edit), {:controller => :recurring_planning, :action => :new, :issue_id => (@issue.id rescue nil)}, :remote => true, :method => :get
+
+  %h3
+    = "Планирование"

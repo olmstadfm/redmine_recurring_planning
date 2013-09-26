@@ -1,0 +1,64 @@
+- require File.dirname(__FILE__) + '/../../helpers/recurring_planning_helper.rb'
+- extend RecurringPlanningHelper
+
+%h3= "Автопланирование"
+
+= form_tag(home_path) do 
+  = select_tag 'recurrence_rule[type]', rule_type_options, :onchange => "switchRecurrencePeriod(this.value)", :style => 'width: 100%'
+
+  %div{id: 'recurrence-details', style: 'display: none;'}
+
+    = l(:label_recurrence_period) + ':'
+    = text_field_tag 'recurrence_rule[period]', (params[:recurrence_rule][:type].to_i rescue 1), :style => 'width: 10%; text-align: right;'
+
+    %div{id: 'recurrence-weekly', style: 'display: none;'}
+      = weekdays_options
+      
+    %div{id: 'recurrence-monthly', style: 'display: none;'}
+      = label_tag :monthly_type, "По числам", :value => "by_date"  
+      = radio_button_tag :monthly_type, "by_date", true, :onchange => "switchMonthlySelector(this.value);"
+      = label_tag :monthly_type, "По дням недели", :value => "by_weekday" 
+      = radio_button_tag :monthly_type, "by_weekday", false, :onchange => "switchMonthlySelector(this.value);"  
+
+      %div{id: 'recurrence-monthly-by-date', style: 'display: none;'}
+        = monthly_dates_options
+      
+      %div{id: 'recurrence-monthly-by-weekday', style: 'display: none;'}
+        = monthly_weekdays_options
+
+  = submit_tag l(:button_save)
+
+:javascript
+
+  function switchRecurrencePeriod(arg) { 
+
+    $("#recurrence-weekly").css("display", "none");
+    $("#recurrence-monthly").css("display", "none");
+
+    if(arg == "none") {
+      $("#recurrence-details").css("display", "none"); 
+    } else {
+      $("#recurrence-details").css("display", "block"); 
+      switch(arg){
+        case "weekly":
+          $("#recurrence-weekly").css("display", "block"); 
+          break;
+        case "monthly":
+          $("#recurrence-monthly").css("display", "block");      
+          break;
+      }
+    }
+  }
+
+  function switchMonthlySelector(arg) {
+    $("#recurrence-monthly-by-date").css("display", "none"); 
+    $("#recurrence-monthly-by-weekday").css("display", "none");      
+    switch(arg){
+        case "by_date":
+          $("#recurrence-monthly-by-date").css("display", "block"); 
+          break;
+        case "by_weekday":
+          $("#recurrence-monthly-by-weekday").css("display", "block");      
+          break;
+      }
+  }

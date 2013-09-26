@@ -1,0 +1,10 @@
+# English strings go here for Rails i18n
+en:
+  label_recurrence_period: Every
+  label_recurrence_last: last
+
+  label_recurrence_none: none
+  label_recurrence_dayly: Daily
+  label_recurrnce_weekly: Weekly
+  label_recurrence_monthly: Monthly
+  label_recurrnce_yearly: Yearly

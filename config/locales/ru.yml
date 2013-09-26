@@ -1,0 +1,9 @@
+ru:
+  label_recurrence_period: Каждые
+  label_recurrence_last: последний
+
+  label_recurrence_none: не повторяется
+  label_recurrence_dayly: Ежедневно
+  label_recurrence_weekly: Еженедельно
+  label_recurrence_monthly: Ежемесячно
+  label_recurrence_yearly: Ежегодно
