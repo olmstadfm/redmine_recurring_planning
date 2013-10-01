@@ -17,13 +17,14 @@ end
 Rails.configuration.to_prepare do
 
   [
-   :issues_helper 
+   :issue
   ].each do |cl|
     require "redmine_recurring_planning/recurring_planning_#{cl}_patch"
   end
 
   [
-    [IssuesHelper, RecurringPlanningPlugin::IssuesHelperPatch],
+    #[IssuesHelper, RecurringPlanningPlugin::IssuesHelperPatch],
+    [Issue, RecurringPlanningPlugin::IssuePatch]
   ].each do |cl, patch|
     cl.send(:include, patch) unless cl.included_modules.include? patch
   end

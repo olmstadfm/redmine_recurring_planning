@@ -7,32 +7,29 @@ module RecurringPlanningHelper
   def rule_type_options
     rule_types = {
       :none => l(:label_recurrence_none),
-      :daily => l(:label_recurrence_dayly),
-      :weekly => l(:label_recurrence_weekly),
-      :monthly => l(:label_recurrence_monthly),
-      :yearly => l(:label_recurrence_yearly)
+      "IceCube::DailyRule" => l(:label_recurrence_dayly),
+      "IceCube::WeeklyRule" => l(:label_recurrence_weekly),
+      "IceCube::MonthlyRule" => l(:label_recurrence_monthly),
+      "IceCube::YearlyRule" => l(:label_recurrence_yearly)
     }
     rule_types_collection = rule_types.map{|k,v| OpenStruct.new(id: k.to_s, name: v.to_s) }
     options_from_collection_for_select(rule_types_collection, 'id', 'name', (params[:recurrence_rule][:type].to_i rescue nil)).html_safe
   end
 
-  def weekdays_with_index
-    res = (0..6).to_a.zip(::I18n::t('date.day_names'))
+  def weekdays_with_index(format = 'day_names')
+    res = (0..6).to_a.zip(::I18n::t("date.#{format}"))
     res << res.shift
-  end
-
-  def dates_with_index
-    ((1..31).to_a + [:last]).zip((1..31).to_a + [l(:label_recurrence_last)])
   end
 
   def dates_ul(param_name)
     ('<ul style = "list-style-type: none;">' +
-      dates_with_index.map{|i, dt|
-        '<li style="display: inline-block; width: 50px;">' + check_box_tag(param_name, i) + " " + dt.to_s + '</li>'
+      (1..31).to_a.map{|dt|
+        '<li style="display: inline-block; width: 50px;">' + check_box_tag(param_name, dt) + ' ' + dt.to_s + '</li>'
       }.each_slice(7).to_a.
-     map{|sept|
-       sept.join + '<br>' 
-     }.join +
+      map{|sept|
+        sept.join + '<br>' 
+      }.join +
+      '<li style="display: inline-block; width: 200px; margin-top: 10px;">' + check_box_tag(param_name, 'last') + ' ' + l(:label_recurrence_last) + '</li>' +
     '</ul>').html_safe
   end
 
@@ -45,17 +42,21 @@ module RecurringPlanningHelper
   end
 
   def weekdays_options
-    weekdays_ul('recurrence[weekdays][]')
+    weekdays_ul('validations[day][]')
   end
 
   def monthly_dates_options
-    dates_ul('recurrence[monthly_dates][]')
+    dates_ul('validations[day_of_month][]')
   end
 
   def monthly_weekdays_options
-    weekdays_ul('recurrence[monthly_weekdays][]')
+    weekdays_ul('validations[day][]')
   end
     
-  # self.instance_methods.each{|m| module_function m }
+  def monthly_weekdays_options_2
+    (1..4).map{|i|
+      "<b>#{i}</b>" + weekdays_with_index(:abbr_day_names).map{|j,wd| check_box_tag("validations[day_of_week][#{j}][]", i) + wd.to_s }.join + '<br>'
+    }.join.html_safe
+  end
   
 end

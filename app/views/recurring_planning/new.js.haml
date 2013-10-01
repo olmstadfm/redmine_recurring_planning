@@ -1,3 +1,2 @@
-$('#ajax-modal').html('#{ escape_javascript(render :partial => 'issues/recurrence_dialog') }');
+$('#ajax-modal').html('#{ escape_javascript(render :partial => 'issues/recurrence_dialog', :locals =>{:id => @issue.id}) }');
 showModal('ajax-modal', '450px');
-

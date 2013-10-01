@@ -1,6 +1,14 @@
 #recurrence
   .contextual
-    = link_to l(:button_edit), {:controller => :recurring_planning, :action => :new, :issue_id => (@issue.id rescue nil)}, :remote => true, :method => :get
+    = link_to l(:button_edit), {:controller => :recurring_planning, :action => :new, :id => (@issue.id rescue nil)}, :remote => true, :method => :get
 
   %h3
     = "Планирование"
+
+  %ul
+    - if @issue.recurring_rule
+      %ul
+      - @issue.recurring_rule.occurrences(@issue.due_date).each do |o| 
+        %li= o.to_s
+
+  %p= @issue.recurring_rule.to_s

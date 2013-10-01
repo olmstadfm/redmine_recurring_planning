@@ -1,30 +1,33 @@
 - require File.dirname(__FILE__) + '/../../helpers/recurring_planning_helper.rb'
 - extend RecurringPlanningHelper
 
-%h3= "Автопланирование"
+%h3.title= "Автопланирование"
 
-= form_tag(home_path) do 
-  = select_tag 'recurrence_rule[type]', rule_type_options, :onchange => "switchRecurrencePeriod(this.value)", :style => 'width: 100%'
+= form_tag(controller: 'recurring_planning', action: 'create') do 
+
+  = hidden_field_tag 'id', @issue.id
+
+  = select_tag 'rule_type', rule_type_options, :onchange => "switchRecurrencePeriod(this.value)", :style => 'width: 100%'
 
   %div{id: 'recurrence-details', style: 'display: none;'}
 
     = l(:label_recurrence_period) + ':'
-    = text_field_tag 'recurrence_rule[period]', (params[:recurrence_rule][:type].to_i rescue 1), :style => 'width: 10%; text-align: right;'
+    = text_field_tag 'interval', (params[:recurrence_rule][:type].to_i rescue 1), :style => 'width: 10%; text-align: right;'
 
     %div{id: 'recurrence-weekly', style: 'display: none;'}
       = weekdays_options
       
     %div{id: 'recurrence-monthly', style: 'display: none;'}
       = label_tag :monthly_type, "По числам", :value => "by_date"  
-      = radio_button_tag :monthly_type, "by_date", true, :onchange => "switchMonthlySelector(this.value);"
+      = radio_button_tag :monthly_type, "by_date", true, :onclick => "switchMonthlySelector(this.value);"
       = label_tag :monthly_type, "По дням недели", :value => "by_weekday" 
-      = radio_button_tag :monthly_type, "by_weekday", false, :onchange => "switchMonthlySelector(this.value);"  
+      = radio_button_tag :monthly_type, "by_weekday", false, :onclick => "switchMonthlySelector(this.value);"  
 
       %div{id: 'recurrence-monthly-by-date', style: 'display: none;'}
         = monthly_dates_options
       
       %div{id: 'recurrence-monthly-by-weekday', style: 'display: none;'}
-        = monthly_weekdays_options
+        = monthly_weekdays_options_2
 
   = submit_tag l(:button_save)
 
@@ -40,10 +43,10 @@
     } else {
       $("#recurrence-details").css("display", "block"); 
       switch(arg){
-        case "weekly":
+        case "IceCube::WeeklyRule":
           $("#recurrence-weekly").css("display", "block"); 
           break;
-        case "monthly":
+        case "IceCube::MonthlyRule":
           $("#recurrence-monthly").css("display", "block");      
           break;
       }

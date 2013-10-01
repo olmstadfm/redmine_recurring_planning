@@ -1,5 +1,5 @@
 module RedmineRecurringPlanning
   class Hooks < Redmine::Hook::ViewListener
-    render_on :view_issues_sidebar_issues_bottom, :partial => 'issues/recurrence'
+    render_on :view_issues_sidebar_issues_bottom, :partial => 'issues/recurrence', :locals => {:issue => @issue}
   end
 end 
