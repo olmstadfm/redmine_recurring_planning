@@ -10,7 +10,7 @@ module RecurringPlanningPlugin
 
       base.class_eval do
 
-        serialize :recurring_rule
+        serialize :planning_schedule, IceCube::Schedule
 
       end
 
@@ -20,23 +20,20 @@ module RecurringPlanningPlugin
     end
 
     module InstanceMethods
-
-      # fixme: rename field to something like recurring_planning or
-      # recurring_planning_schedule. point is it returns schedule, not rule.
             
-      def recurring_rule
-        IceCube::Schedule.load(read_attribute(:recurring_rule))
-      end
+      # def planning_schedule
+      #   IceCube::Schedule.load(read_attribute(:planning_schedule))
+      # end
 
-      def recurring_rule=(arg)
-        if arg.kind_of? IceCube::Schedule
-          write_attribute(:recurring_rule, arg.to_yaml)
-        elsif !arg
-          write_attribute(:recurring_rule, nil)
-        else
-          raise ArgumentError
-        end
-      end
+      # def planning_schedule=(arg)
+      #   if arg.kind_of? IceCube::Schedule
+      #     write_attribute(:planning_schedule, arg.to_yaml)
+      #   elsif !arg
+      #     write_attribute(:planning_schedule, nil)
+      #   else
+      #     raise ArgumentError
+      #   end
+      # end
 
     end
   end

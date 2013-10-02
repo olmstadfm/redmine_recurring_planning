@@ -12,7 +12,22 @@ class RecurringPlanningController < ApplicationController
   end
 
   def create
+    schedule_from_params
+    @issue.planning_schedule = @shedule
+    @issue.save
 
+    @schedule.occurrences(@issue.due_date).each do |occ|
+      create_estimated_time_from_occurence(occ)
+    end
+
+    redirect_to issue_path(@issue)
+
+  end
+
+  private
+
+  def schedule_from_params
+    
     if params['validations']
       if params['validations']['day'].kind_of? Array
         params['validations']['day'].map!{|d| d.to_i}
@@ -28,14 +43,23 @@ class RecurringPlanningController < ApplicationController
 
     params['interval'] = params['interval'].to_i
 
-    @issue.recurring_rule = IceCube::Schedule.new(now = Time.now) do |s|
+    @schedule = IceCube::Schedule.new(now = Time.now) do |s|
       s.add_recurrence_rule IceCube::Rule.from_hash(params)
     end
+  end
 
-    @issue.save
-
-    redirect_to issue_path(@issue)
-
+  def create_estimated_time_from_occurence(occ)
+    es = EstimatedTime.new(project_id: @issue.project_id, 
+                           issue_id: @issue.id, 
+                           user_id: @issue.assigned_to_id, 
+                           hours: 1.0, 
+                           plan_on: occ.to_date, 
+                           comments: l(:label_recurring_planning_comment))
+    if es.valid?
+      es.save
+    else
+      Rails.logger.errors "  Estimated_times: #{es.errors.full_messages}".red
+    end
   end
 
 end

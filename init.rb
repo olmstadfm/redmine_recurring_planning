@@ -1,4 +1,5 @@
 require 'redmine_recurring_planning/hooks'
+require 'colorize'
 
 Redmine::Plugin.register :redmine_recurring_planning do
   name 'Redmine Recurring Planning plugin'

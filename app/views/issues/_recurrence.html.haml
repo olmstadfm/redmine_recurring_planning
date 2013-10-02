@@ -6,9 +6,9 @@
     = "Планирование"
 
   %ul
-    - if @issue.recurring_rule
+    - if @issue.planning_schedule
       %ul
-      - @issue.recurring_rule.occurrences(@issue.due_date).each do |o| 
-        %li= o.to_s
+      - @issue.planning_schedule.occurrences(@issue.due_date).each do |o| 
+        %li= o.strftime('%Y-%m-%d')
 
-  %p= @issue.recurring_rule.to_s
+  %p= @issue.planning_schedule.to_s
