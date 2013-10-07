@@ -7,7 +7,7 @@ module RecurringPlanningHelper
   def rule_type_options
     rule_types = {
       :none => l(:label_recurrence_none),
-      "IceCube::DailyRule" => l(:label_recurrence_dayly),
+   #  "IceCube::DailyRule" => l(:label_recurrence_dayly),
       "IceCube::WeeklyRule" => l(:label_recurrence_weekly),
       "IceCube::MonthlyRule" => l(:label_recurrence_monthly),
       "IceCube::YearlyRule" => l(:label_recurrence_yearly)
@@ -49,11 +49,11 @@ module RecurringPlanningHelper
     dates_ul('validations[day_of_month][]')
   end
 
-  def monthly_weekdays_options
-    weekdays_ul('validations[day][]')
-  end
+  # def monthly_weekdays_options # old
+  #   weekdays_ul('validations[day][]')
+  # end
     
-  def monthly_weekdays_options_2
+  def monthly_weekdays_options
     (1..4).map{|i|
       "<b>#{i}</b>" + weekdays_with_index(:abbr_day_names).map{|j,wd| check_box_tag("validations[day_of_week][#{j}][]", i) + wd.to_s }.join + '<br>'
     }.join.html_safe

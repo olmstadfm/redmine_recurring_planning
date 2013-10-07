@@ -8,3 +8,7 @@ en:
   label_recurrnce_weekly: Weekly
   label_recurrence_monthly: Monthly
   label_recurrnce_yearly: Yearly
+
+  label_recurring_planning_comment: (Planned from schedule)
+
+  label_amount_per_day: "Amount of time"

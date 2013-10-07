@@ -10,7 +10,7 @@ module RecurringPlanningPlugin
 
       base.class_eval do
 
-        serialize :planning_schedule, IceCube::Schedule
+        serialize :planning_schedule
 
       end
 
@@ -27,7 +27,7 @@ module RecurringPlanningPlugin
 
       # def planning_schedule=(arg)
       #   if arg.kind_of? IceCube::Schedule
-      #     write_attribute(:planning_schedule, arg.to_yaml)
+      #     write_attribute(:planning_schedule, arg)
       #   elsif !arg
       #     write_attribute(:planning_schedule, nil)
       #   else

@@ -11,8 +11,15 @@
 
   %div{id: 'recurrence-details', style: 'display: none;'}
 
-    = l(:label_recurrence_period) + ':'
-    = text_field_tag 'interval', (params[:recurrence_rule][:type].to_i rescue 1), :style => 'width: 10%; text-align: right;'
+    %table
+      %tr
+        %td
+          = l(:label_recurrence_period) + ':'
+          = text_field_tag 'interval', "1", :style => 'width: 10%; text-align: right;'
+
+        %td
+          = l(:label_amount_per_day) + ':'
+          = text_field_tag 'amount', "1.0", :style => 'width: 10%; text-align: right;'
 
     %div{id: 'recurrence-weekly', style: 'display: none;'}
       = weekdays_options
@@ -27,7 +34,7 @@
         = monthly_dates_options
       
       %div{id: 'recurrence-monthly-by-weekday', style: 'display: none;'}
-        = monthly_weekdays_options_2
+        = monthly_weekdays_options
 
   = submit_tag l(:button_save)
 
@@ -48,6 +55,7 @@
           break;
         case "IceCube::MonthlyRule":
           $("#recurrence-monthly").css("display", "block");      
+          $("#recurrence-monthly-by-date").css("display", "block"); 
           break;
       }
     }

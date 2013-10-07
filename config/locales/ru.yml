@@ -9,3 +9,5 @@ ru:
   label_recurrence_yearly: Ежегодно
 
   label_recurring_planning_comment: (Запланировано автоматически)
+
+  label_amount_per_day: "Количество часов"
