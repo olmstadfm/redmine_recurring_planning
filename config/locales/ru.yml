@@ -1,6 +1,6 @@
 ru:
-  label_recurrence_period: Каждые
-  label_recurrence_last: последний
+  label_recurrence_period: Интервал повторения
+  label_recurrence_last: последний день месяца
 
   label_recurrence_none: не повторяется
   label_recurrence_dayly: Ежедневно

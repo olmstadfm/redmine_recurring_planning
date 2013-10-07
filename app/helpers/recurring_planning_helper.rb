@@ -10,7 +10,7 @@ module RecurringPlanningHelper
    #  "IceCube::DailyRule" => l(:label_recurrence_dayly),
       "IceCube::WeeklyRule" => l(:label_recurrence_weekly),
       "IceCube::MonthlyRule" => l(:label_recurrence_monthly),
-      "IceCube::YearlyRule" => l(:label_recurrence_yearly)
+   #  "IceCube::YearlyRule" => l(:label_recurrence_yearly)
     }
     rule_types_collection = rule_types.map{|k,v| OpenStruct.new(id: k.to_s, name: v.to_s) }
     options_from_collection_for_select(rule_types_collection, 'id', 'name', (params[:recurrence_rule][:type].to_i rescue nil)).html_safe
@@ -29,7 +29,7 @@ module RecurringPlanningHelper
       map{|sept|
         sept.join + '<br>' 
       }.join +
-      '<li style="display: inline-block; width: 200px; margin-top: 10px;">' + check_box_tag(param_name, 'last') + ' ' + l(:label_recurrence_last) + '</li>' +
+      '<li style="display: inline-block; width: 200px; margin-top: 10px;">' + check_box_tag(param_name, '-1') + ' ' + l(:label_recurrence_last) + '</li>' +
     '</ul>').html_safe
   end
 
