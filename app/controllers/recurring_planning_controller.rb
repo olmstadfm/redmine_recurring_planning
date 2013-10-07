@@ -11,6 +11,33 @@ class RecurringPlanningController < ApplicationController
 
   def create
 
+    @amount = params['amount'].to_f
+
+    if old_schedule = @issue.planning_schedule
+      old_schedule.occurrences(@issue.due_date).each do |occ|
+        delete_estimated_time_from_occurence(occ)
+      end
+    end
+
+    schedule = schedule_from_params
+
+    schedule && schedule.occurrences(@issue.due_date).each do |occ|
+      create_estimated_time_from_occurence(occ, @amount)
+    end
+
+    @issue.planning_schedule = schedule
+    @issue.save
+
+    redirect_to issue_path(@issue)
+
+  end
+
+  private
+
+  def schedule_from_params
+
+    return nil if params['rule_type'] == 'none'
+
     if params['validations']
       if params['validations']['day'].kind_of? Array
         params['validations']['day'].map!{|d| d.to_i}
@@ -25,52 +52,11 @@ class RecurringPlanningController < ApplicationController
     end
 
     params['interval'] = params['interval'].to_i
-    @amount = params['amount'].to_f
 
-    if old_schedule = @issue.planning_schedule
-      old_schedule.occurrences(@issue.due_date).each do |occ|
-        delete_estimated_time_from_occurence(occ)
-      end
-    end
-
-    schedule = IceCube::Schedule.new(now = Time.now) do |s|
+    IceCube::Schedule.new(now = Time.now) do |s|
       s.add_recurrence_rule IceCube::Rule.from_hash(params)
     end
-
-    schedule.occurrences(@issue.due_date).each do |occ|
-      create_estimated_time_from_occurence(occ, @amount)
-    end
-
-    @issue.planning_schedule = schedule
-    @issue.save
-
-    redirect_to issue_path(@issue)
-
   end
-
-  private
-
-  # def schedule_from_params
-    
-  #   if params['validations']
-  #     if params['validations']['day'].kind_of? Array
-  #       params['validations']['day'].map!{|d| d.to_i}
-  #     end
-  #     if params['validations']['day_of_week'].kind_of? Hash
-  #       # convert hash of strings to hash of integers
-  #       params['validations']['day_of_week'] = params['validations']['day_of_week'].inject(Hash.new){|s,p| s[p[0].to_i] = p[1].map{|i| i.to_i}; s }
-  #     end
-  #     if params['validations']['day_of_month'].kind_of? Array
-  #       params['validations']['day_of_month'].map!{|d| d.to_i} 
-  #     end
-  #   end
-
-  #   params['interval'] = params['interval'].to_i
-
-  #   @schedule = IceCube::Schedule.new(now = Time.now) do |s|
-  #     s.add_recurrence_rule IceCube::Rule.from_hash(params)
-  #   end
-  # end
 
   def create_estimated_time_from_occurence(occ, amount)
 

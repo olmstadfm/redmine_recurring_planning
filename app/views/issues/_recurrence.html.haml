@@ -1,14 +1,15 @@
-#recurrence
-  .contextual
-    = link_to l(:button_edit), {:controller => :recurring_planning, :action => :new, :id => (@issue.id rescue nil)}, :remote => true, :method => :get
+- if User.current == @issue.assigned_to
+  #recurrence
+    .contextual
+      = link_to l(:button_edit), {:controller => :recurring_planning, :action => :new, :id => (@issue.id rescue nil)}, :remote => true, :method => :get
 
-  %h3
-    = "Планирование"
+    %h3
+      = "Планирование"
 
-  %ul
-    - if @issue.planning_schedule
-      %ul
-      - @issue.planning_schedule.occurrences(@issue.due_date).each do |o| 
-        %li= o.strftime('%Y-%m-%d')
+    %ul
+      - if @issue.planning_schedule
+        %ul
+        - @issue.planning_schedule.occurrences(@issue.due_date).each do |o| 
+          %li= o.strftime('%Y-%m-%d')
 
-  %p= @issue.planning_schedule.to_s
+    %p= @issue.planning_schedule.to_s
