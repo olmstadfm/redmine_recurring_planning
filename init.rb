@@ -3,10 +3,10 @@ require 'colorize'
 
 Redmine::Plugin.register :redmine_recurring_planning do
   name 'Redmine Recurring Planning plugin'
-  author 'Author name'
-  description 'This is a plugin for Redmine'
+  author 'antonovgks'
+  description 'Autoplanning for issues.'
   version '0.0.1'
-  url 'http://example.com/path/to/plugin'
+  url 'https://bitbucket.org/antonovgks/redmine_recurring_planning'
   author_url 'http://example.com/about'
   
   project_module :recurring_planning do
