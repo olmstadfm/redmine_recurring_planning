@@ -3,7 +3,7 @@
 
 %h3.title= "Автопланирование"
 
-= form_tag(controller: 'recurring_planning', action: 'create') do 
+= form_tag({controller: 'recurring_planning', action: 'create'}, id: 'schedule_form') do 
 
   = hidden_field_tag 'id', @issue.id
 
@@ -15,11 +15,11 @@
       %tr
         %td
           = l(:label_recurrence_period) + ':'
-          = text_field_tag 'interval', "1", :style => 'width: 10%; text-align: right;'
+          = text_field_tag 'interval', "1", :style => 'width: 10%; text-align: right;', :id => 'schedule_interval'
 
         %td
           = l(:label_amount_per_day) + ':'
-          = text_field_tag 'amount', "1.0", :style => 'width: 15%; text-align: right;'
+          = text_field_tag 'amount', "1.0", :style => 'width: 15%; text-align: right;', :id => 'schedule_amount'
 
     %div{id: 'recurrence-weekly', style: 'display: none;'}
       = weekdays_options
@@ -39,6 +39,14 @@
   = submit_tag l(:button_save)
 
 :javascript
+
+  $('#schedule_form').submit(function(event) {
+    if( $('#schedule_interval').val() != "" || $('#schedule_amount').val() != "" || $('#rule_type').val() == 'none' )  {
+      form.submit()
+    } else {
+      event.preventDefault();
+    }
+  });
 
   function switchRecurrencePeriod(arg) { 
 

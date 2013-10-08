@@ -1,11 +1,9 @@
 - if  User.current == @issue.assigned_to
   #recurrence
-    .contextual
-      = link_to l(:button_turn_on), {:controller => :recurring_planning, :action => :new, :id => (@issue.id rescue nil)}, :remote => true, :method => :get
 
-    %h3= l(:label_autoplanning)
-     
-    - if @issue.planning_schedule && false # turned off in production
+    %h3= link_to l(:label_do_plan), {:controller => :recurring_planning, :action => :new, :id => (@issue.id rescue nil)}, :remote => true, :method => :get
+
+    - if false && @issue.planning_schedule # debug. turned off in production
       %ul
         - @issue.planning_schedule.occurrences(@issue.due_date).each do |o| 
           %li= o.strftime('%Y-%m-%d')
