@@ -57,7 +57,7 @@ module RecurringPlanningHelper
     (1..4).map{|i|
       "<b style=\"margin-right: 10px;\">#{i}</b>" + 
       weekdays_with_index(:abbr_day_names).map{|j,wd| 
-        check_box_tag("validations[day_of_week][#{j}][]", i, false, style: "margin-right: 5px;") + wd.to_s 
+        check_box_tag("validations[day_of_week][#{j}][]", i, false, style: "margin-left: 15px;") + wd.to_s 
       }.join + '<br>' + '<hr>'
     }.join.html_safe
   end
