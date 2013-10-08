@@ -41,10 +41,10 @@
 :javascript
 
   $('#schedule_form').submit(function(event) {
-    if( $('#schedule_interval').val() != "" || $('#schedule_amount').val() != "" || $('#rule_type').val() == 'none' )  {
-      form.submit()
-    } else {
+    if( ($('#schedule_interval').val() == "" || $('#schedule_amount').val() == "") && $('#rule_type').val() != 'none' )  {
       event.preventDefault();
+    } else {
+      form.submit()
     }
   });
 
