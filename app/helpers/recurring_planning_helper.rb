@@ -27,7 +27,7 @@ module RecurringPlanningHelper
         '<li style="display: inline-block; width: 50px;">' + check_box_tag(param_name, dt) + ' ' + dt.to_s + '</li>'
       }.each_slice(7).to_a.
       map{|sept|
-        sept.join + '<br>' 
+        sept.join + '<br>' + '<hr>'
       }.join +
       '<li style="display: inline-block; width: 200px; margin-top: 10px;">' + check_box_tag(param_name, '-1') + ' ' + l(:label_recurrence_last) + '</li>' +
     '</ul>').html_safe
@@ -55,7 +55,10 @@ module RecurringPlanningHelper
     
   def monthly_weekdays_options
     (1..4).map{|i|
-      "<b>#{i}</b>" + weekdays_with_index(:abbr_day_names).map{|j,wd| check_box_tag("validations[day_of_week][#{j}][]", i) + wd.to_s }.join + '<br>'
+      "<b style=\"margin-right: 10px;\">#{i}</b>" + 
+      weekdays_with_index(:abbr_day_names).map{|j,wd| 
+        check_box_tag("validations[day_of_week][#{j}][]", i, style: "margin-right: 5px;") + wd.to_s 
+      }.join + '<br>' + '<hr>'
     }.join.html_safe
   end
   

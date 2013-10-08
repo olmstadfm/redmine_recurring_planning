@@ -13,11 +13,7 @@ class RecurringPlanningController < ApplicationController
 
     @amount = params['amount'].to_f
 
-    if old_schedule = @issue.planning_schedule
-      old_schedule.occurrences(@issue.due_date).each do |occ|
-        delete_estimated_time_from_occurence(occ)
-      end
-    end
+    delete_current_schedule_occurences
 
     schedule = schedule_from_params
 
@@ -26,7 +22,6 @@ class RecurringPlanningController < ApplicationController
     end
 
     @issue.planning_schedule = schedule
-    @issue.save
 
     redirect_to issue_path(@issue)
 
@@ -36,7 +31,11 @@ class RecurringPlanningController < ApplicationController
 
   def schedule_from_params
 
-    return nil if params['rule_type'] == 'none'
+    if params['rule_type'] == 'none'
+      @issue.planning_schedule = nil if @issue.issue_planning_schedule
+      # @issue.issue_planning_schedule.destroy if @issue.issue_planning_schedule
+      return nil
+    end
 
     if params['validations']
       if params['validations']['day'].kind_of? Array
@@ -74,6 +73,14 @@ class RecurringPlanningController < ApplicationController
   def delete_estimated_time_from_occurence(occ)
     estimated_time = estimated_time_from_occurence(occ)
     estimated_time.destroy if estimated_time
+  end
+
+  def delete_current_schedule_occurences
+    if old_schedule = @issue.planning_schedule
+      old_schedule.occurrences(@issue.due_date).each do |occ|
+        delete_estimated_time_from_occurence(occ)
+      end
+    end
   end
 
   def estimated_time_from_occurence(occ)

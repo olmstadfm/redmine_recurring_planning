@@ -9,9 +9,7 @@ module RecurringPlanningPlugin
       base.send(:include, InstanceMethods)
 
       base.class_eval do
-
-        serialize :planning_schedule
-
+        has_one :issue_planning_schedule, :dependent => :destroy
       end
 
     end
@@ -20,20 +18,21 @@ module RecurringPlanningPlugin
     end
 
     module InstanceMethods
-            
-      # def planning_schedule
-      #   IceCube::Schedule.load(read_attribute(:planning_schedule))
-      # end
+       
+      def planning_schedule
+        if issue_planning_schedule
+          issue_planning_schedule.planning_schedule
+        end
+      end
 
-      # def planning_schedule=(arg)
-      #   if arg.kind_of? IceCube::Schedule
-      #     write_attribute(:planning_schedule, arg)
-      #   elsif !arg
-      #     write_attribute(:planning_schedule, nil)
-      #   else
-      #     raise ArgumentError
-      #   end
-      # end
+      def planning_schedule=(arg)
+        if issue_planning_schedule
+          issue_planning_schedule.planning_schedule = arg || IceCube::Schedule.new
+          issue_planning_schedule.save
+        else
+          create_issue_planning_schedule(planning_schedule: arg)
+        end
+      end
 
     end
   end

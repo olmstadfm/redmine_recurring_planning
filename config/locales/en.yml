@@ -1,5 +1,8 @@
 # English strings go here for Rails i18n
 en:
+  label_autoplanning: Autoplanning
+  button_turn_on: Turn on
+
   label_recurrence_period: Every
   label_recurrence_last: last
 
@@ -12,3 +15,4 @@ en:
   label_recurring_planning_comment: (Planned from schedule)
 
   label_amount_per_day: "Amount of time"
+

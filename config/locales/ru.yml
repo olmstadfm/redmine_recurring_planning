@@ -1,4 +1,8 @@
 ru:
+
+  label_autoplanning: Автопланирование
+  button_turn_on: Включить
+
   label_recurrence_period: Интервал повторения
   label_recurrence_last: последний день месяца
 
@@ -11,3 +15,4 @@ ru:
   label_recurring_planning_comment: (Запланировано автоматически)
 
   label_amount_per_day: "Количество часов"
+
