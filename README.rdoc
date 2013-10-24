@@ -1,3 +1,0 @@
-= redmine_recurring_planning
-
-Description goes here
