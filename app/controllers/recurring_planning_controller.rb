@@ -17,7 +17,7 @@ class RecurringPlanningController < ApplicationController
 
     schedule = schedule_from_params
 
-    schedule && schedule.occurrences(@issue.due_date).each do |occ|
+    schedule && schedule.occurrences_between(Date.today.end_of_week + 1.day, @issue.due_date).each do |occ|
       create_estimated_time_from_occurence(occ, @amount)
     end
 
@@ -70,17 +70,17 @@ class RecurringPlanningController < ApplicationController
     end
   end
 
-  def delete_estimated_time_from_occurence(occ)
-    estimated_time = estimated_time_from_occurence(occ)
-    estimated_time.destroy if estimated_time
-  end
-
   def delete_current_schedule_occurences
     if old_schedule = @issue.planning_schedule
-      old_schedule.occurrences(@issue.due_date).each do |occ|
+      old_schedule.occurrences_between(Date.today.end_of_week + 1.day, @issue.due_date).each do |occ|
         delete_estimated_time_from_occurence(occ)
       end
     end
+  end
+
+  def delete_estimated_time_from_occurence(occ)
+    estimated_time = estimated_time_from_occurence(occ)
+    estimated_time.destroy if estimated_time
   end
 
   def estimated_time_from_occurence(occ)

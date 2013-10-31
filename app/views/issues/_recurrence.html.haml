@@ -1,4 +1,4 @@
-- if @issue && User.current == @issue.assigned_to
+- if @issue && User.current == @issue.assigned_to && !@issue.closed?
   #recurrence
 
     %h3= link_to l(:label_do_plan), {:controller => :recurring_planning, :action => :new, :id => (@issue.id rescue nil)}, :remote => true, :method => :get
