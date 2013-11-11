@@ -16,4 +16,6 @@ ru:
 
   label_amount_per_day: "Количество часов"
 
-  label_do_plan: Запланировать
+  label_planning: Планирование
+  label_do_regular_plan: на конкретную дату
+  label_do_recurring_plan: повторяющееся

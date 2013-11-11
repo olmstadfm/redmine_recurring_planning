@@ -1,5 +1,6 @@
 # English strings go here for Rails i18n
 en:
+
   label_autoplanning: Autoplanning
   button_turn_on: Turn on
 
@@ -17,3 +18,8 @@ en:
   label_amount_per_day: "Amount of time"
 
   label_do_plan: Fill planning
+
+
+  label_planning: Planning
+  label_do_regular_plan: for arbitrary date
+  label_do_recurring_plan: recurring
