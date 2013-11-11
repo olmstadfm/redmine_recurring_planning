@@ -6,9 +6,9 @@
 
     %h3= l(:label_planning)
     %ul
-      %li{style: 'list-style-type: square; margin-left: 20px;'}
+      %li{style: 'list-style-type: square; '}
         = link_to l(:label_do_regular_plan), {:controller => :estimated_times, :action => :new, :estimated_time => {:issue_id => @issue.id, :plan_on => Date.today }}
-      %li{style: 'list-style-type: square; margin-left: 20px;'}
+      %li{style: 'list-style-type: square; '}
         = link_to l(:label_do_recurring_plan), {:controller => :recurring_planning, :action => :new, :id => (@issue.id rescue nil)}, :remote => true, :method => :get
 
 
