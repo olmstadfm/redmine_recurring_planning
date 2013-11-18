@@ -83,12 +83,6 @@ module RecurringPlanningHelper
   # end
 
   def monthly_weekdays_checked?(week_number, day_number)
-
-  #   rule = @issue.planning_schedule.recurrence_rules.first.to_hash
-  #   rule[:rule_type] == "IceCube::MonthlyRule" && rule[:validations][:day_of_week][week_number].include?(day_number)
-  # rescue
-  #   false
-
     schedule = @issue.planning_schedule
     if schedule
       rule = schedule.recurrence_rules.first.try(:to_hash) || Hash.new
@@ -100,6 +94,13 @@ module RecurringPlanningHelper
     else
       false
     end
+
+    # probably, this method should be written as follows:
+    #   rule = @issue.planning_schedule.recurrence_rules.first.to_hash
+    #   rule[:rule_type] == "IceCube::MonthlyRule" && rule[:validations][:day_of_week][week_number].include?(day_number)
+    # rescue
+    #   false
+
   end
     
   def monthly_weekdays_options
@@ -111,4 +112,23 @@ module RecurringPlanningHelper
     }.join.html_safe
   end
   
+  def auto_select_tabs
+    if schedule = @issue.planning_schedule
+      rule = schedule.recurrence_rules.first.try(:to_hash) || Hash.new
+      elements = ['#recurrence-details']
+      if rule[:rule_type] =~ /Monthly/
+        select = '#recurrence-monthly'
+        elements << select
+        if rule[:validations].has_key?(:day_of_month)
+          elements << select+'-by-date'
+        elsif rule[:validations].has_key?(:day_of_week)
+          elements << select+'-by-weekday'
+        end
+      elsif rule[:rule_type] =~ /Weekly/
+        elements << '#recurrence-weekly'
+      end
+      elements
+    end
+  end
+
 end

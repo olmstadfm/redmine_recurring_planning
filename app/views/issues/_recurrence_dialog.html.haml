@@ -1,7 +1,7 @@
 - require File.dirname(__FILE__) + '/../../helpers/recurring_planning_helper.rb'
 - extend RecurringPlanningHelper
 
-%h3.title= "Автопланирование"
+%h3.title= @issue.planning_schedule ? "У Вас уже запланировано " : "Автопланирование"
 
 = form_tag({controller: 'recurring_planning', action: 'create'}, id: 'schedule_form') do 
 
@@ -38,6 +38,10 @@
 
   = submit_tag l(:button_save)
 
+- for id in auto_select_tabs
+  :javascript
+    $("#{id}").css("display", "block");
+
 :javascript
 
   $('#schedule_form').submit(function(event) {
@@ -51,8 +55,8 @@
   function switchRecurrencePeriod(arg) { 
 
     $("#recurrence-weekly").css("display", "none");
-    $("#recurrence-monthly").css("display", "none");
 
+    $("#recurrence-monthly").css("display", "none");
     $("#recurrence-monthly-by-date").css("display", "none"); 
     $("#recurrence-monthly-by-weekday").css("display", "none");      
 
