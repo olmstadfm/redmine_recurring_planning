@@ -13,12 +13,13 @@ module RecurringPlanningHelper
    #  "IceCube::YearlyRule" => l(:label_recurrence_yearly)
     }
     rule_types_collection = rule_types.map{|k,v| OpenStruct.new(id: k.to_s, name: v.to_s) }
-    options_from_collection_for_select(rule_types_collection, 'id', 'name', (params[:recurrence_rule][:type].to_i rescue nil)).html_safe
+    # options_from_collection_for_select(rule_types_collection, 'id', 'name', (params[:recurrence_rule][:type].to_i rescue nil)).html_safe
+    options_from_collection_for_select(rule_types_collection, 'id', 'name', current_rule_type).html_safe
   end
 
   def weekdays_with_index(format = 'day_names')
     res = (0..6).to_a.zip(::I18n::t("date.#{format}"))
-    res << res.shift
+    res << res.shift # week starts from monday (which index is 1)
   end
 
 
@@ -107,15 +108,23 @@ module RecurringPlanningHelper
     (1..4).map{|i|
       "<b style=\"margin-right: 10px;\">#{i}</b>" + 
       weekdays_with_index(:abbr_day_names).map{|j,wd| 
-        check_box_tag("validations[day_of_week][#{j}][]", i, monthly_weekdays_checked?(i,j), style: "margin-left: 15px;") + wd.to_s 
+        check_box_tag("validations[day_of_week][#{j}][]", i, monthly_weekdays_checked?(j,i), style: "margin-left: 15px;") + wd.to_s 
       }.join + '<br>' + '<hr>'
     }.join.html_safe
   end
-  
-  def auto_select_tabs
+
+  def current_rule_type
     if schedule = @issue.planning_schedule
       rule = schedule.recurrence_rules.first.try(:to_hash) || Hash.new
-      elements = ['#recurrence-details']
+      rule_type = rule[:rule_type]
+    end
+  end
+
+  
+  def auto_select_tabs
+    elements = [] 
+    if schedule = @issue.planning_schedule
+      rule = schedule.recurrence_rules.first.try(:to_hash) || Hash.new
       if rule[:rule_type] =~ /Monthly/
         select = '#recurrence-monthly'
         elements << select
@@ -127,8 +136,9 @@ module RecurringPlanningHelper
       elsif rule[:rule_type] =~ /Weekly/
         elements << '#recurrence-weekly'
       end
-      elements
+      elements << '#recurrence-details' unless elements.empty?
     end
+    elements
   end
 
 end

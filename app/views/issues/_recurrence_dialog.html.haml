@@ -14,12 +14,11 @@
     %table
       %tr
         %td
+          = l(:label_amount_per_day) + ':'
+          = text_field_tag 'amount', "%.2f" % (@issue.planned_amount || 1), :style => 'width: 15%; text-align: right;', :id => 'schedule_amount'
+        %td
           = l(:label_recurrence_period) + ':'
           = text_field_tag 'interval', "1", :style => 'width: 10%; text-align: right;', :id => 'schedule_interval'
-
-        %td
-          = l(:label_amount_per_day) + ':'
-          = text_field_tag 'amount', "1.0", :style => 'width: 15%; text-align: right;', :id => 'schedule_amount'
 
     %div{id: 'recurrence-weekly', style: 'display: none;'}
       = weekdays_options
@@ -54,11 +53,8 @@
 
   function switchRecurrencePeriod(arg) { 
 
-    $("#recurrence-weekly").css("display", "none");
-
-    $("#recurrence-monthly").css("display", "none");
-    $("#recurrence-monthly-by-date").css("display", "none"); 
-    $("#recurrence-monthly-by-weekday").css("display", "none");      
+    var elements = ["#recurrence-weekly", "#recurrence-monthly", "#recurrence-monthly-by-date", "#recurrence-monthly-by-weekday"]
+    for(i in elements){ $(elements[i]).css("display", "none"); }
 
     if(arg == "none") {
       $("#recurrence-details").css("display", "none"); 

@@ -21,7 +21,7 @@ class RecurringPlanningController < ApplicationController
       create_estimated_time_from_occurence(occ, @amount)
     end
 
-    @issue.planning_schedule = schedule
+    @issue.save_planning_schedule(schedule,) # TODO currently auto-saves issue_planning_schedule
 
     redirect_to issue_path(@issue)
 
@@ -32,7 +32,7 @@ class RecurringPlanningController < ApplicationController
   def schedule_from_params
 
     if params['rule_type'] == 'none'
-      @issue.planning_schedule = nil if @issue.issue_planning_schedule
+      @issue.save_planning_schedule(nil, nil) if @issue.issue_planning_schedule
       # @issue.issue_planning_schedule.destroy if @issue.issue_planning_schedule
       return nil
     end
