@@ -11,17 +11,16 @@ class RecurringPlanningController < ApplicationController
 
   def create
 
-    @amount = params['amount'].to_f
-
     delete_current_schedule_occurences
 
     schedule = schedule_from_params
+    @amount = amount_from_params
 
     schedule && schedule.occurrences_between(Date.today.end_of_week + 1.day, @issue.due_date).each do |occ|
       create_estimated_time_from_occurence(occ, @amount)
     end
 
-    @issue.save_planning_schedule(schedule,) # TODO currently auto-saves issue_planning_schedule
+    @issue.save_planning_schedule(schedule, @amount) # TODO currently auto-saves issue_planning_schedule
 
     redirect_to issue_path(@issue)
 
@@ -31,11 +30,7 @@ class RecurringPlanningController < ApplicationController
 
   def schedule_from_params
 
-    if params['rule_type'] == 'none'
-      @issue.save_planning_schedule(nil, nil) if @issue.issue_planning_schedule
-      # @issue.issue_planning_schedule.destroy if @issue.issue_planning_schedule
-      return nil
-    end
+    return nil if params['rule_type'] == 'none'
 
     if params['validations']
       if params['validations']['day'].kind_of? Array
@@ -54,6 +49,14 @@ class RecurringPlanningController < ApplicationController
 
     IceCube::Schedule.new(now = Time.now) do |s|
       s.add_recurrence_rule IceCube::Rule.from_hash(params)
+    end
+  end
+
+  def amount_from_params
+    if params['rule_type'] == 'none'
+      nil
+    else
+      params['amount'].to_f
     end
   end
 

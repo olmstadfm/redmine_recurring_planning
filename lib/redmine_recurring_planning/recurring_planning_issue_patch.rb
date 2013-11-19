@@ -32,10 +32,6 @@ module RecurringPlanningPlugin
       end
 
       def save_planning_schedule(schedule, amount=nil)
-        Rails.logger.error( "SAVE ALL THE THINGS #{[schedule, amount].inspect} ".red)
-
-        puts caller.map{|c| c.split('/').last}
-
         if issue_planning_schedule
           issue_planning_schedule.planning_schedule = schedule || IceCube::Schedule.new
           issue_planning_schedule.amount = amount 
