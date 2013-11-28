@@ -25,12 +25,19 @@ module RecurringPlanningPlugin
         end
       end
 
-      def planning_schedule=(arg)
+      def planned_amount
         if issue_planning_schedule
-          issue_planning_schedule.planning_schedule = arg || IceCube::Schedule.new
+          issue_planning_schedule.amount
+        end
+      end
+
+      def save_planning_schedule(schedule, amount=nil)
+        if issue_planning_schedule
+          issue_planning_schedule.planning_schedule = schedule || IceCube::Schedule.new
+          issue_planning_schedule.amount = amount 
           issue_planning_schedule.save
         else
-          create_issue_planning_schedule(planning_schedule: arg)
+          create_issue_planning_schedule(planning_schedule: schedule, amount: amount)
         end
       end
 
