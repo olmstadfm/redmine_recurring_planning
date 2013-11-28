@@ -44,7 +44,7 @@
 :javascript
 
   $('#schedule_form').submit(function(event) {
-    if( ($('#schedule_interval').val() == "" || $('#schedule_amount').val() == "") && $('#rule_type').val() != 'none' )  {
+    if( ($('#schedule_interval').val() == "" || $('#schedule_interval').val() == "0" || $('#schedule_amount').val() == "") && $('#rule_type').val() != 'none' )  {
       event.preventDefault();
     } else {
       form.submit()
