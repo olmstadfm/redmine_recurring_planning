@@ -5,6 +5,8 @@
     %ul
       %li{style: 'list-style-type: square; '}
         = link_to l(:label_do_regular_plan), {:controller => :estimated_times, :action => :new, :estimated_time => {:issue_id => @issue.id }}
+      %li{style: 'list-style-type: square; '}
+        = link_to l(:label_do_recurring_plan), {:controller => :recurring_planning, :action => :new, :id => (@issue.id rescue nil)}, :remote => true, :method => :get
 
     - if false && @issue.planning_schedule # debug. turned off in production
       %ul
