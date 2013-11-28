@@ -51,6 +51,7 @@ class RecurringPlanningController < ApplicationController
     end
 
     params['interval'] = params['interval'].to_i
+    params['interval'] = 1 unless params['interval'] > 0
 
     IceCube::Schedule.new(now = Time.now) do |s|
       s.add_recurrence_rule IceCube::Rule.from_hash(params)
